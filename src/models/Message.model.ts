@@ -1,20 +1,52 @@
-// models/Message.model.ts
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
-export interface MessageDocument extends Document {
+interface IMessage extends Document {
   sender: string;
-  text: string;
+  text?: string;
   groupId: string;
   senderName: string;
-  createdAt: Date;
+  fileUrl?: string;
+  fileType?: "image" | "video" | "document" | "audio";
+  timestamp: Date;
 }
 
-const MessageSchema: Schema = new Schema({
-  sender: { type: String, required: true },
-  text: { type: String, required: true },
-  groupId: { type: String, required: true },
-  senderName: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
+const MessageSchema = new Schema<IMessage>({
+  sender: {
+    type: String,
+    required: true,
+  },
+  text: {
+    type: String,
+    required: false,
+  },
+  groupId: {
+    type: String,
+    required: true,
+  },
+  senderName: {
+    type: String,
+    required: true,
+  },
+  fileUrl: {
+    type: String,
+    required: false,
+  },
+  fileType: {
+    type: String,
+    enum: ["image", "video", "document", "audio"],
+    required: false,
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-export default mongoose.model<MessageDocument>("Message", MessageSchema);
+// Add validation to ensure either text or file is provided
+MessageSchema.pre("validate", function () {
+  if (!this.text && !this.fileUrl) {
+    this.invalidate("text", "Either text or file must be provided");
+  }
+});
+
+export const Message = mongoose.model<IMessage>("Message", MessageSchema);
