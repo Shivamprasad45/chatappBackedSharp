@@ -1,0 +1,16 @@
+# .gitignore
+
+# Environment files
+.env
+.env.local
+
+# Node modules
+node_modules/
+
+# Build output
+.next/
+dist/
+
+# OS and Editor-specific
+.DS_Store
+.vscode/

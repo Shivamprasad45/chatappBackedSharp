@@ -1,8 +1,8 @@
-import { Router } from "express";
-import { BoardCastMessage } from "../controllers/Message";
+// import { Router } from "express";
+// import { BoardCastMessage } from "../controllers/Message";
 
-const router = Router();
+// const router = Router();
 
-router.get("/receive", BoardCastMessage);
+// router.get("/receive", BoardCastMessage);
 
-export default router;
+// export default router;
